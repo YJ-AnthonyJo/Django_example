@@ -21,9 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 """get_secret function from https://grape-blog.tistory.com/17"""
-import json
+import os, json
 from django.core.exceptions import ImproperlyConfigured
-secret_file = 'secrets.json'
+secret_file = os.path.join(BASE_DIR, 'secrets.json')
 with open(secret_file) as f:
     secrets = json.loads(f.read())
 
