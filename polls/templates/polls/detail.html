@@ -1,0 +1,26 @@
+<!-- <h1>{{ question.question_text }}</h1>
+<ul>
+{% for choice in question.choice_set.all %}
+<--
+    question.choice_set.all ==> question.choice_set.all()로 해석된다(in python)
+    object choice can be used in { for } context
+    more info about template : https://docs.djangoproject.com/ko/4.0/topics/templates/
+->
+    <li>{{ choice.choice_text }}</li>
+{% endfor %}
+</ul> -->
+
+<!-- below : version two -->
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+<fieldset>
+    <legend><h1>{{ question.question_text }}</h1></legend>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% for choice in question.choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        <!-- forloop.counter : count of how many for tag repeated -->
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+    {% endfor %}
+</fieldset>
+<input type="submit" value="Vote">
+</form>

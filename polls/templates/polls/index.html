@@ -1,0 +1,26 @@
+
+<!-- 왜 우리는 app 안에 templates를 만들면서 그 안에 또 polls 폴더를 만드는가?
+이제 우리는 템플릿을 polls/templates 에 직접 넣는 것에서 벗어날 수 있을지도 모르지만 (또 다른 polls 하위 디렉토리를 만드는 것보다는) 실제로는 좋은 생각이 아닙니다. 
+Django는 이름이 일치하는 첫 번째 템플릿을 선택하는데 만약 다른 응용 프로그램에 같은 이름의 템플릿이 있으면 Django는 이러한 템플릿을 구별할 수 없습니다. 
+Django에게 정확한 템플릿을 지정하기 위해서 가장 편리한 방법은 *이름공간*으로 구분짓는 것입니다. 이것은 애플리케이션의 이름으로 된 디렉토리에 이러한 템플릿들을 넣으면 됩니다. 
+-> 나중에 실헝해보자-->
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+        <!--below a tag -> using { url } tag to reduce dependency of hard coded url(in first a tag, it is hard coded using /polls/)
+            'detail' : polls.urls -> path() fucntion which name attribute is 'detail'
+                path('<int:question_id>/', views.detail, name = 'detail')
+        -->
+        <!-- <li><a href="{ url 'detail' question.id }">{{ question.question_text }}</a></li> -->
+        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        <!-- third a tag -> use polls:detail, polls is app_name defined in polls.urls -->
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
